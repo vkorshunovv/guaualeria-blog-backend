@@ -24,11 +24,9 @@ let posts = [
   },
 ];
 
-
-app.get("/api/posts/", (req, res) => {
-  res.json(posts);
+app.get("/api/posts", (req, res) => {
+  res.status(200).json(posts);
 });
-
 
 app.post("/api/posts", (req, res) => {
   const { title, content } = req.body;
@@ -37,9 +35,10 @@ app.post("/api/posts", (req, res) => {
   res.status(201).json(newPost);
 });
 
-app.delete("/api/posts", (req,res) => {
-posts.pop()
-res.status(200).json(posts)  
+app.delete("/api/posts/:id", (req, res) => {
+  const postId = parseInt(req.params.id, 10);
+  posts = posts.filter((post) => post.id !== postId);
+  res.status(200).json(posts);
 });
 
 app.listen(PORT, () => {
